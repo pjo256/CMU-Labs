@@ -40,19 +40,7 @@ typedef struct {
 	 cache_set *sets;
 } cache;
 
-/*
-	cache_param_t parameters;
-	parameters = getopt(parameters, ...); 
 
-	while (
-	
-	cache myCache;
-	myCache.sets = (cache_set*) malloc(sizeof(cache_set) * num_sets);
-	int setIndex = 0;	
-	repeat
-		initialize line block
-		myCache.sets[setIndex].lines = (set_line*) malloc(sizeof(set_line) *
-*/
 int verbosity;
 
 long long bit_pow(int exp) 
@@ -95,17 +83,16 @@ cache build_cache(long long num_sets, int num_lines, long long block_size)
 
 	for (setIndex = 0; setIndex < num_sets; setIndex ++) 
 	{
-		//cache_set set = newCache.sets[setIndex];
+		
 		set.lines =  (set_line *) malloc(sizeof(set_line) * num_lines);
 		newCache.sets[setIndex] = set;
 
 		for (lineIndex = 0; lineIndex < num_lines; lineIndex ++) 
 		{
-			//set_line line = set.lines[lineIndex];
+			
 			line.last_used = 0;
 			line.valid = 0;
 			line.tag = 0; 
-			//line.block = (char *) malloc(sizeof(char) * block_size);
 			set.lines[lineIndex] = line;	
 		}
 		
@@ -118,20 +105,12 @@ cache build_cache(long long num_sets, int num_lines, long long block_size)
 void clear_cache(cache sim_cache, long long num_sets, int num_lines, long long block_size) 
 {
 	int setIndex;
-	//int lineIndex;
+	
 
 	for (setIndex = 0; setIndex < num_sets; setIndex ++) 
 	{
 		cache_set set = sim_cache.sets[setIndex];
-		/*	
-		for (lineIndex = 0; lineIndex < num_lines; lineIndex ++) 
-		{
-			set_line line = set.lines[lineIndex];
-			if (line.block != NULL) {
-				free(line.block);	
-			}
-		}
-		*/
+		
 		if (set.lines != NULL) {	
 			free(set.lines);
 		}
@@ -166,20 +145,20 @@ int find_evict_line(cache_set query_set, cache_param_t par, int *used_lines) {
 	int min_used = query_set.lines[0].last_used;
 	int min_used_index = 0;
 
-	set_line line; //Temporal locality
+	set_line line; 
 	int lineIndex;
 
 	for (lineIndex = 1; lineIndex < num_lines; lineIndex ++) {
-				line = query_set.lines[lineIndex];
+		line = query_set.lines[lineIndex];
 
-				if (min_used > line.last_used) {
-					min_used_index = lineIndex;	
-					min_used = line.last_used;
-				}
+		if (min_used > line.last_used) {
+			min_used_index = lineIndex;	
+			min_used = line.last_used;
+		}
 
-				if (max_used < line.last_used) {
-					max_used = line.last_used;
-				}
+		if (max_used < line.last_used) {
+			max_used = line.last_used;
+		}
 	}
 
 	used_lines[0] = min_used;
@@ -246,7 +225,7 @@ cache_param_t run_sim(cache sim_cache, cache_param_t par, mem_addr_t address) {
 		}
 
 		else
-	    {
+	        {
 			int empty_index = find_empty_line(query_set, par);
 
 			//Found first empty line, write to it.
